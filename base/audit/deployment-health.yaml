@@ -1,0 +1,22 @@
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: ConfigurationPolicy
+metadata:
+  name: audit-deployment-availability
+spec:
+  remediationAction: inform
+  severity: medium
+  namespaceSelector:
+    include:
+    - 'openshift-operators'
+    - 'external-secrets'  
+  object-templates:
+  - complianceType: musthave
+    objectDefinition:
+      apiVersion: apps/v1
+      kind: Deployment
+      status:
+        conditions:
+          - status: "True"
+            type: Available
+ 

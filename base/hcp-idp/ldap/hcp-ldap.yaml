@@ -1,0 +1,62 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: ConfigurationPolicy
+metadata:
+  name: hcp-idp-ldap
+spec:
+  remediationAction: enforce
+  severity: high
+  object-templates-raw: >
+    {{ range $cluster := (lookup "hypershift.openshift.io/v1beta1" "HostedCluster" "" "").items }}
+      {{ $cluster_name := $cluster.metadata.name }}
+      {{ $namespace := $cluster.metadata.namespace }}
+
+      # Create HostedCluster configuration with LDAP identity providers
+      - complianceType: musthave
+        objectDefinition:
+          kind: HostedCluster
+          apiVersion: hypershift.openshift.io/v1beta1
+          metadata:
+            name: {{ $cluster_name }}
+            namespace: {{ $namespace }}
+          spec:
+            configuration:
+              oauth:
+                identityProviders:
+                - ldap:
+                    attributes:
+                      email:
+                      - mail
+                      id:
+                      - dn
+                      name:
+                      - cn
+                      preferredUsername:
+                      - uid
+                    bindDN: uid=dummy-user,ou=users,dc=example,dc=com
+                    bindPassword:
+                      name: ldap-bind-password
+                    insecure: false
+                    url: 'ldaps://ldap.example.com:636/ou=users,dc=example,dc=com?uid'
+                  mappingMethod: claim
+                  name: Example LDAP 1
+                  type: LDAP
+                - ldap:
+                    attributes:
+                      email:
+                      - mail
+                      id:
+                      - dn
+                      name:
+                      - cn
+                      preferredUsername:
+                      - uid
+                    bindDN: uid=dummy-user,ou=users,dc=another-example,dc=com
+                    bindPassword:
+                      name: ldap-bind-password
+                    insecure: false
+                    url: 'ldaps://ldap.another-example.com:636/ou=users,dc=another-example,dc=com?uid'
+                  mappingMethod: claim
+                  name: Example LDAP 2
+                  type: LDAP
+    {{ end }}
+ 

@@ -1,0 +1,61 @@
+---
+default:
+  app:
+    annotations:
+      argocd.argoproj.io/compare-options: IgnoreExtraneous
+    enabled: true
+    enableAutoSync: true
+    autoSyncPrune: false
+    project: cluster-acm-policies
+    destination:
+      namespace: openshift-gitops
+      server: https://kubernetes.default.svc
+    source:
+      repoURL: https://github.com/yantra-vinyasa/rhacm-policies.git
+      targetRevision: main
+    syncOptions:
+    - ApplyOutOfSyncOnly=true
+    #- PrunePropagationPolicy=foreground
+    - PruneLast=true
+    #- ServerSideApply=true  
+    #- FailOnSharedResource=true
+    #- RespectIgnoreDifferences=true
+    - CreateNamespace=true
+    syncPolicyRetry:
+      limit: 6 # number of failed sync attempt retries; unlimited number of attempts if less than 0
+      backoff:
+        duration: 5s # the amount to back off. Default unit is seconds, but could also be a duration (e.g. "2m", "1h")
+        factor: 2 # a factor to multiply the base duration after each failed retry
+        maxDuration: 10m # the maximum amount of time allowed for the backoff strategy
+
+projects:
+  cluster-acm-policies:
+    annotations:
+      argocd.argoproj.io/sync-wave: '-2'
+    description: Project for overall cluster configuration
+    namespace: openshift-gitops
+    sourceRepos:
+    - https://github.com/yantra-vinyasa/rhacm-policies.git
+    destinations: |
+      - namespace: '*'
+        server: https://kubernetes.default.svc
+    extraFields: |
+      clusterResourceWhitelist:
+      - group: '*'
+        kind: '*'
+
+applications:
+
+
+  hcp-idp-policyset:
+    annotations:
+      argocd.argoproj.io/sync-wave: '10'
+    source:
+      path: overlays/lab-hub/hcp-idp-policyset
+
+  ocp-policyset:
+    annotations:
+      argocd.argoproj.io/sync-wave: '20'
+    source:
+      path: overlays/lab-hub/ocp-policyset
+
