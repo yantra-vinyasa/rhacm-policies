@@ -1,0 +1,17 @@
+---
+apiVersion: policy.open-cluster-management.io/v1beta1
+kind: OperatorPolicy
+metadata:
+  name: external-secrets-operator
+spec:
+  remediationAction: enforce
+  severity: medium
+  complianceType: musthave
+  subscription:
+    channel: stable
+    name: external-secrets-operator
+    namespace: openshift-operators
+    source: community-operators
+    sourceNamespace: openshift-marketplace
+  upgradeApproval: Automatic
+
