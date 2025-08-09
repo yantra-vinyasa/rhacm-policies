@@ -13,8 +13,8 @@ This directory and sub-directories contain the environment specific overlays for
 * **Do** Use placements via [PlacementPath](https://github.com/stolostron/policy-generator-plugin/blob/main/docs/policygenerator-reference.yaml#L146).
 
 ## Links of interest
-[Policy Generator Reference](https://github.com/stolostron/policy-generator-plugin/blob/main/docs/policygenerator-reference.yaml)
-[Community Policy Collection](https://github.com/open-cluster-management-io/policy-collection)
+- [Policy Generator Reference](https://github.com/stolostron/policy-generator-plugin/blob/main/docs/policygenerator-reference.yaml)
+- [Community Policy Collection](https://github.com/open-cluster-management-io/policy-collection)
 
 # Overview of included Policies
 
