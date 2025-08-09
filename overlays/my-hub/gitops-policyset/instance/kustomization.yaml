@@ -1,0 +1,14 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../../base/openshift-gitops/instance/
+- externalsecret-repo-gitlab-openshift.yaml
+ 
+patches:
+# Patches the rbac policies
+- path: patch-rbac.yaml
+  target:
+    kind: ArgoCD
+    name: openshift-gitops
+

@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: appofapps
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: openshift-gitops
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: 'cluster-configs/overlays/{{ $cluster := split "." (fromClusterClaim "consoleurl.cluster.open-cluster-management.io") }}{{ $cluster._2 }}/app-factory'
+    repoURL: https://git.example.com/path/to/repo.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+ 
+
+#We want to extract the specific cluster "ops2" from the URL value: 'https://console-openshift-console.apps.ops2.yantra.example.com/'. 
+#The split <delimiter> value function splits the URL into an array, storing it in the variable cluster. 
+#Since we need to use the third element (ops2), we access it using index $cluster 2. 
+#This allows us to directly extract the site name for the path construction
