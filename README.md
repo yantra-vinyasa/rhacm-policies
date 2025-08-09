@@ -14,6 +14,7 @@ This directory and sub-directories contain the environment specific overlays for
 
 ## Links of interest
 [Policy Generator Reference](https://github.com/stolostron/policy-generator-plugin/blob/main/docs/policygenerator-reference.yaml)
+[Community Policy Collection](https://github.com/open-cluster-management-io/policy-collection)
 
 # Overview of included Policies
 
@@ -26,4 +27,6 @@ The `overlay` directory covery information to which clusters the policies are ap
 | console-banner | X | X | Displays a banner on the OpenShift Web Console. |
 | hcp-idp | X | | Configures htpasswd/LDAP identity providers for Hosted Clusters. |
 | ocp/self-provisioner | X | | Grants self-provisioning rights to users. |
+| openshift-gitops | | X | Installs and configures OpenShift GitOps (Argo CD). |
+| external-secrets-operator | | X | Installs the External Secrets Operator for managing secrets. |
 
