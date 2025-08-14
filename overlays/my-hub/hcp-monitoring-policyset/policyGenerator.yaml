@@ -35,4 +35,4 @@ policySets:
   policies:
   - hcp-monitoring
   placement:
-    placementRuleName: hub-only
+    placementName: hub-only
