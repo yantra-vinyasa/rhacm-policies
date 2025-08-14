@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - monitoring-dashboard-cm.yaml
   - metrics-set-deployment-config.yaml
+  - monitoring-dashboard-template.yaml
