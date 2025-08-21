@@ -1,0 +1,24 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: ConfigurationPolicy
+metadata:
+  name: hcp-chrony-nodepool-worker
+spec:
+  remediationAction: enforce
+  severity: high
+  object-templates-raw: >
+    {{ range $cluster := (lookup "hypershift.openshift.io/v1beta1" "HostedCluster" "" "").items }}
+      {{ $namespace := $cluster.metadata.namespace }}
+
+      # Create configuration for NodePool 'nodepool-worker'
+      - complianceType: musthave
+        objectDefinition:
+          apiVersion: hypershift.openshift.io/v1beta1
+          kind: NodePool
+          metadata:
+            name: nodepool-worker
+            namespace: {{ $namespace }}
+          spec:
+            config:
+            - name: cm-chrony-machineconfig
+    {{ end }}
+ 
